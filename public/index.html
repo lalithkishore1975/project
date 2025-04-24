@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plagiarism Checker | Detect Copied Content</title>
+  <meta name="description" content="Check your text or code for plagiarism with our advanced plagiarism detection tool">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="app">
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13 7L11.8845 4.76892C11.5634 4.1268 11.0288 3.58728 10.3559 3.29677L8 2.28989M2 12H5M2 8.5H8M2 15.5H8M11.5 21.01L12.5 18.5M15 21.01L13.5 18.5M17 21.01L15 18.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21.9994 12.0002C21.9994 15.8662 18.8654 19.0002 14.9994 19.0002C11.1334 19.0002 7.99939 15.8662 7.99939 12.0002C7.99939 8.13419 11.1334 5.00019 14.9994 5.00019C18.8654 5.00019 21.9994 8.13419 21.9994 12.0002Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M17.5 14.5L12.5 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M17.5 9.5L12.5 14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h1>PlagCheck</h1>
+          </div>
+          <nav class="nav">
+            <ul>
+              <li><a href="#" class="active" data-view="checker">Checker</a></li>
+              <li><a href="#" data-view="history">History</a></li>
+              <li><a href="#" data-view="about">About</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+    
+    <main>
+      <!-- Checker View -->
+      <section id="checker-view" class="view active">
+        <div class="container">
+          <div class="checker-container">
+            <div class="checker-header">
+              <h2>Plagiarism Checker</h2>
+              <p>Paste your text or code to check for plagiarism</p>
+            </div>
+            
+            <div class="input-container">
+              <div class="input-header">
+                <div class="content-type">
+                  <label for="content-type">Content type:</label>
+                  <select id="content-type">
+                    <option value="text" selected>Text</option>
+                    <option value="code">Code</option>
+                    <option value="html">HTML</option>
+                  </select>
+                </div>
+                <button id="clear-btn" class="btn-secondary">Clear</button>
+              </div>
+              
+              <textarea id="input-text" placeholder="Paste your text or code here..."></textarea>
+              
+              <div class="action-bar">
+                <span id="char-count">0 characters</span>
+                <button id="check-btn" class="btn-primary">Check Plagiarism</button>
+              </div>
+            </div>
+            
+            <div id="results-container" class="results-container hidden">
+              <div class="results-header">
+                <h3>Plagiarism Check Results</h3>
+                <div class="result-actions">
+                  <button id="download-btn" class="btn-secondary">Download Report</button>
+                  <button id="close-results-btn" class="btn-secondary">Close</button>
+                </div>
+              </div>
+              
+              <div class="score-card">
+                <div class="score-display">
+                  <div class="score-circle">
+                    <span id="plagiarism-score">0%</span>
+                  </div>
+                  <div class="score-label">
+                    <span>Plagiarism Score</span>
+                    <span id="plagiarism-level" class="label">Original</span>
+                  </div>
+                </div>
+                <div class="score-description">
+                  <p id="score-explanation">Your content appears to be original. No significant matches were found in our search.</p>
+                </div>
+              </div>
+              
+              <div id="matches-container" class="matches-container">
+                <h4>Matched Sources</h4>
+                <div id="matches-list" class="matches-list">
+                  <!-- Matches will be added here dynamically -->
+                </div>
+              </div>
+            </div>
+            
+            <div id="loading-container" class="loading-container hidden">
+              <div class="loading-spinner"></div>
+              <p>Searching for matches...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- History View -->
+      <section id="history-view" class="view">
+        <div class="container">
+          <div class="history-container">
+            <div class="history-header">
+              <h2>Check History</h2>
+              <p>View your recent plagiarism checks</p>
+            </div>
+            
+            <div id="history-list" class="history-list">
+              <!-- History items will be added here dynamically -->
+              <div class="empty-state">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 8V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <p>No check history yet</p>
+                <a href="#" data-view="checker" class="btn-primary">Run a check</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- About View -->
+      <section id="about-view" class="view">
+        <div class="container">
+          <div class="about-container">
+            <div class="about-header">
+              <h2>About PlagCheck</h2>
+              <p>Advanced plagiarism detection for text and code</p>
+            </div>
+            
+            <div class="about-content">
+              <div class="about-section">
+                <h3>How It Works</h3>
+                <p>PlagCheck uses advanced algorithms to search the web for content similar to your text or code. We analyze the results and provide a similarity score to help you identify potential plagiarism.</p>
+                
+                <h3>Features</h3>
+                <ul>
+                  <li>Check text and code for plagiarism</li>
+                  <li>Highlight matched content for easy identification</li>
+                  <li>View source URLs for matched content</li>
+                  <li>Download detailed reports</li>
+                  <li>Check history for reviewing past results</li>
+                </ul>
+                
+                <h3>Tips for Using PlagCheck</h3>
+                <ul>
+                  <li>For best results, check content in chunks of 500-1000 words</li>
+                  <li>Use the appropriate content type (text, code, HTML)</li>
+                  <li>Review each matched source carefully</li>
+                  <li>Remember that some similar phrasing may be coincidental</li>
+                </ul>
+              </div>
+              
+              <div class="about-section">
+                <h3>Privacy & Security</h3>
+                <p>We take your privacy seriously. Your content is only used for the purpose of checking plagiarism and is not stored permanently on our servers.</p>
+                
+                <h3>Limitations</h3>
+                <p>While our tool is highly effective, no plagiarism checker is 100% accurate. Some content may not be accessible to our search algorithms, and some similarities may be coincidental.</p>
+                
+                <a href="#" data-view="checker" class="btn-primary">Start Checking</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Result Detail View -->
+      <section id="result-detail-view" class="view">
+        <div class="container">
+          <div class="result-detail-container">
+            <div class="result-detail-header">
+              <button id="back-to-history-btn" class="btn-back">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Back to History
+              </button>
+              <h2>Check Result</h2>
+            </div>
+            
+            <div id="result-detail-content" class="result-detail-content">
+              <!-- Result details will be added here dynamically -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    
+    <footer>
+      <div class="container">
+        <p>&copy; 2025 PlagCheck. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+  
+  <script src="js/app.js" type="module"></script>
+</body>
+</html>

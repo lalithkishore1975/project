@@ -1,40 +1,53 @@
 pipeline {
     agent any
-
+    
     environment {
+        APP_NAME = 'project-app'
+        APP_PORT = '3000'
         NODE_ENV = 'development'
     }
 
     stages {
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+        
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Build Docker Image') {
             steps {
-                sh 'npm install'
+                script {
+                    sh "docker build -t ${APP_NAME} ."
+                }
             }
         }
 
-        stage('Lint/Build (Optional)') {
+        stage('Deploy') {
             steps {
-                echo 'Add linting/build commands here if needed'
+                script {
+                    sh "docker-compose up -d"
+                }
             }
         }
-
-        stage('Run App') {
+        
+        stage('Verify') {
             steps {
-                sh 'npm run dev & sleep 5'
-                echo 'App started temporarily for test purposes'
+                script {
+                    sh "curl -I http://localhost:${APP_PORT} || exit 1"
+                }
             }
         }
     }
-
+    
     post {
         always {
-            echo 'Pipeline Finished'
+            echo "Pipeline status: ${currentBuild.currentResult}"
         }
     }
 }
