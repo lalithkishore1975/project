@@ -1,0 +1,33 @@
+{
+  "name": "plagiarism-checker",
+  "version": "1.0.0",
+  "description": "A web application to check for plagiarism in text and code",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "plagiarism",
+    "code-checker",
+    "similarity"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.2",
+    "cheerio": "^1.0.0-rc.12",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "html-to-text": "^9.0.5",
+    "jaro-winkler": "^0.2.8",
+    "lodash": "^4.17.21",
+    "morgan": "^1.10.0",
+    "string-similarity": "^4.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

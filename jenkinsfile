@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+
+    environment {
+        NODE_ENV = 'development'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('Lint/Build (Optional)') {
+            steps {
+                echo 'Add linting/build commands here if needed'
+            }
+        }
+
+        stage('Run App') {
+            steps {
+                sh 'npm run dev & sleep 5'
+                echo 'App started temporarily for test purposes'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline Finished'
+        }
+    }
+}
